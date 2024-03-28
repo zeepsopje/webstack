@@ -5,10 +5,8 @@
 </script>
 
 <h1>Pages</h1>
-{#if pages.length > 0}
-	{#each pages as page}
-		{page.title}
-	{/each}
+{#each pages as page}
+	{page.title}
 {:else}
 	There are no pages :(
-{/if}
+{/each}
