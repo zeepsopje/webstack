@@ -10,13 +10,41 @@ import Users from './collections/Users'
 import Pages from './collections/Pages'
 import Media from './collections/Media'
 
+import General from './globals/General';
+import Nav from './globals/Nav';
+
+const collections = [Users, Pages, Media];
+const globals = [General, Nav];
+
 export default buildConfig({
 	admin: {
 		user: Users.slug,
 		bundler: webpackBundler(),
 	},
+	endpoints: [
+		{
+			path: '/globals',
+			method: 'get',
+			handler: async (req, res, next) => {
+				const response = {};
+				const result = await Promise.all(
+					globals.map(({ slug }) => req.payload.findGlobal({
+						slug,
+						depth: 2,
+					}))
+				);
+
+				for (const i in result) {
+					response[result[i].globalType] = result[i];
+				}
+
+				res.json(response);
+			}
+		}
+	],
 	editor: slateEditor({}),
-	collections: [Users, Pages, Media],
+	globals,
+	collections,
 	typescript: {
 		outputFile: path.resolve(__dirname, 'payload-types.ts'),
 	},
