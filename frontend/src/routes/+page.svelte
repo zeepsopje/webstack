@@ -5,3 +5,4 @@
 </script>
 
 <Navbar />
+<h1>Home</h1>
