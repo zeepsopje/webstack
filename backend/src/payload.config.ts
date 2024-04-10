@@ -1,4 +1,5 @@
 import path from 'path'
+import payload from 'payload';
 
 import { payloadCloud } from '@payloadcms/plugin-cloud'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
@@ -10,11 +11,26 @@ import Users from './collections/Users'
 import Pages from './collections/Pages'
 import Media from './collections/Media'
 
+import Nav from './globals/Nav';
+
 export default buildConfig({
 	admin: {
 		user: Users.slug,
 		bundler: webpackBundler(),
 	},
+	globals: [Nav],
+	endpoints: [
+		{
+			path: '/globals',
+			method: 'get',
+			handler: async (req, res) => {
+				const nav = await payload.findGlobal({ slug: 'nav' });
+
+				res.json(nav);
+			}
+
+		}
+	],
 	editor: slateEditor({}),
 	collections: [Users, Pages, Media],
 	typescript: {

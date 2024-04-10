@@ -1,12 +1,7 @@
 <script>
-	export let data;
+	import { Navbar } from '$ui';
 
-	const { pages } = data;
+	export let data = {};
 </script>
 
-<h1>Pages</h1>
-{#each pages as page}
-	{page.title}
-{:else}
-	There are no pages :(
-{/each}
+<Navbar />
